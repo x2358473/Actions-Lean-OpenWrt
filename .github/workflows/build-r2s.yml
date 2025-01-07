@@ -1,7 +1,7 @@
 #=================================================
 # https://github.com/Lancenas/Actions-Lean-OpenWrt
 # Description: Build OpenWrt using GitHub Actions
-# Lisence: MIT
+# License: MIT
 # Author: P3TERX
 # Blog: https://P3TERX.com
 #=================================================
@@ -130,8 +130,13 @@ jobs:
         [ ${UPLOAD_GOFILE} = true && ${{ steps.gofile.outputs.url }} ] && echo "🔗 [GoFile](${{ steps.gofile.outputs.url }})" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
+    - name: Debug firmware directory
+      run: |
+        echo "FIRMWARE=$FIRMWARE"
+        ls -lh $FIRMWARE
+
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@master
+      uses: softprops/action-gh-release@v1
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
